@@ -12,10 +12,5 @@ function galleryRender(gallary) {
     galleryContainer.innerHTML = renderingEl;
 }
 
-function openLightbox(container) {
-    container.addEventListener('click', (e) => e.preventDefault());
-};
-
 galleryRender(galleryItems);
 new SimpleLightbox('.gallery a', { captions: true, captionDelay: 250 });
-openLightbox(galleryContainer);

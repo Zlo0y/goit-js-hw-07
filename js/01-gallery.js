@@ -19,31 +19,35 @@ function galleryRender(gallary) {
     galleryContainer.innerHTML = renderingEl;
 }
 
-function takesOriginalImg(e) {
-    e.preventDefault();
-    const originalImage = e.target.dataset.source;
-    return originalImage;
-};
-
-function showesOriginalImg(container) {
-    container.addEventListener('click', (event) => {
-        const instance = basicLightbox.create(`
-            <img src="${takesOriginalImg(event)}" width="800" height="600">
-        `);
-    instance.show();
-    closeByEscPressing(instance);
-    });
-};
-
-function onPressingEsc(e, instance) {
-    if (e.key === 'Escape' && basicLightbox.visible()) {
-        instance.close();
-    };
-};
-
-function closeByEscPressing(instance) {
-    document.addEventListener('keydown', (event) => onPressingEsc(event, instance), {once: true});
-};
-
 galleryRender(galleryItems);
-showesOriginalImg(galleryContainer);
+
+
+galleryContainer.addEventListener('click', originalImage)
+
+function originalImage (event) {
+        event.preventDefault()
+    if(event.target.nodeName !== "IMG") {
+        return;
+    }
+
+    const instance = basicLightbox.create(`
+    <img src="${event.target.dataset.source}" width="800" height="600">
+    `);
+
+instance.show();
+
+
+window.addEventListener("keydown", setModalListener);
+
+function setModalListener (e) {
+    if(e.code === "Escape"){
+        instance.close()
+        removeCloseListener()
+    };
+
+function removeCloseListener () {
+    window.removeEventListener("keydown", setModalListener)
+        }
+    }
+};
+
